@@ -29,7 +29,7 @@ namespace CSharp_Net_module1_2_1_lab
             Console.WriteLine("Remove Sherlock Holmes");
             user2.RemoveBook("Sherlock Holmes");
             Console.WriteLine("user2.BooksCount "+user2.BooksCount());
-
+            Console.ReadKey();
         }
     }
 }
