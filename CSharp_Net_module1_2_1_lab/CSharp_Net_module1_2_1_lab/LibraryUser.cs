@@ -36,6 +36,7 @@ namespace CSharp_Net_module1_2_1_lab
     {
         private static int _lastId;
         private string[] _bookList;
+        private int _booksCount;
 
         public string this[int index] => BookInfo(index);
         public string FirstName { get; }
@@ -48,6 +49,7 @@ namespace CSharp_Net_module1_2_1_lab
 
         public int BookLimit { get; }
 
+        
         public LibraryUser(string firstName, string lastName, string phone, int bookLimit)
         {
             Id = _lastId++;
@@ -55,7 +57,7 @@ namespace CSharp_Net_module1_2_1_lab
             LastName = lastName;
             Phone = phone;
             BookLimit = bookLimit;
-            _bookList = new string[0];
+            _bookList = new string[BookLimit];
         }
 
         public LibraryUser() : this("Ivan", "Ivanov", "+000000000000", 10)
@@ -66,33 +68,42 @@ namespace CSharp_Net_module1_2_1_lab
 
         public void AddBook(string bookName)
         {
-            if (_bookList.Length >= BookLimit)
+
+            if (_booksCount >= BookLimit)
                 return;
-            foreach (var book in _bookList)
+            for (var i = 0; i < _booksCount; i++)
             {
-                if (bookName == book)
+                if (bookName == _bookList[i])
                     return;
             }
-            var list = _bookList.ToList();
-            list.Add(bookName);
-            _bookList = list.ToArray();
+            _bookList[_booksCount] = bookName;
+            _booksCount++;
         }
 
         public void RemoveBook(string bookName)
         {
-            var list = _bookList.ToList();
-            if (list.Remove(bookName))
-                _bookList = list.ToArray();
+            for (var i = 0; i < _booksCount; i++)
+            {
+                if (bookName == _bookList[i])
+                {
+                    _booksCount--;
+                    if (i < _booksCount)
+                        Array.Copy(_bookList, i + 1, _bookList, i, _booksCount - i);
+                    _bookList[_booksCount] = "";
+                    break;
+                }
+            }
+            
         }
 
         public int BooksCount()
         {
-            return _bookList.Length;
+            return _booksCount;
         }
 
         public string BookInfo(int index)
         {
-            if (index < 0 || index >= _bookList.Length)
+            if (index < 0 || index >= _booksCount)
                 return "";
             return _bookList[index];
         }
