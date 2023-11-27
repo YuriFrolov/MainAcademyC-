@@ -10,8 +10,6 @@ namespace Hello_Class_stud
     {
         public const int Size_2 = Alphabet.Size;
         private int offset_key = 0;
-        private readonly string[,] dictionary_arr;
-
 
         //Implement Morse_matrix constructor with the int parameter for offset
         //Use fd(Alphabet.Dictionary_arr) and sd() methods
@@ -24,11 +22,18 @@ namespace Hello_Class_stud
         public Morse_matrix(string[,] dictionaryArr, int offsetKey = 0)
         {
             offset_key = offsetKey;
-            dictionary_arr = dictionaryArr;
             fd(dictionaryArr);
             sd();
         }
 
+        private Morse_matrix(Morse_matrix morseMatrix, int offsetKey)
+        {
+            offset_key = offsetKey;
+            for (int ii = 0; ii < Size1; ii++)
+                for (int jj = 0; jj < Size_2; jj++)
+                    this[ii, jj] = morseMatrix[ii, jj];
+            sd();
+        }
 
 
         private void fd(string[,] Dict_arr)
@@ -51,35 +56,8 @@ namespace Hello_Class_stud
         //Implement Morse_matrix operator +
 
         public static Morse_matrix operator +(Morse_matrix a, Morse_matrix b)
-        {
-            var dictionaryList = new List<Tuple<string, string>>();
-            for (var i = 0; i < Size_2; i++)
-                dictionaryList.Add(new Tuple<string, string>(a.dictionary_arr[0, i], a.dictionary_arr[1, i]));
-            for (var j = 0; j < Size_2; j++)
-            {
-                bool uniq = true;
-                for (var i = 0; i < Size_2; i++)
-                {
-                    if (a.dictionary_arr[0, i] == b.dictionary_arr[0, j] ||
-                        a.dictionary_arr[1, i] == b.dictionary_arr[1, j])
-                    {
-                        uniq = false;
-                        break;
-                    }
-                }
-                if (uniq)
-                    dictionaryList.Add(new Tuple<string, string>(b.dictionary_arr[0, j], b.dictionary_arr[1, j]));
-            }
-            dictionaryList.Sort((x, y) => string.Compare(x.Item1, y.Item1, StringComparison.Ordinal));
-            var newDictionary = new string[2, dictionaryList.Count];
-            for (var i = 0; i < dictionaryList.Count; i++)
-            {
-                var pair = dictionaryList[i];
-                newDictionary[0, i] = pair.Item1;
-                newDictionary[1, i] = pair.Item2;
-            }
-            var newOffsetKey = a.offset_key + b.offset_key;
-            return new Morse_matrix(newDictionary, newOffsetKey);
+        {            
+            return new Morse_matrix(a, a.offset_key + b.offset_key);
         }
 
 
