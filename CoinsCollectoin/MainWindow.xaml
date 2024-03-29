@@ -1,0 +1,190 @@
+﻿<Window x:Name="MainWindow1" x:Class="CoinsCollection.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CoinsCollection" xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+        mc:Ignorable="d"
+        Title="CoinsCollection" Height="600
+        " Width="800" Loaded="MainWindow1_Loaded" WindowState="Maximized">
+    <Window.Resources>
+        <CollectionViewSource x:Key="materialsViewSource" Filter="MaterialsViewSource_Filter">
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription PropertyName="Name"/>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+        <CollectionViewSource x:Key="countriesViewSource" Filter="CountriesViewSource_Filter">
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription PropertyName="Name"/>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+        <CollectionViewSource x:Key="albumsViewSource" >
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription PropertyName="Name"/>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+        <CollectionViewSource x:Key="albumPagesViewSource" />
+
+
+    </Window.Resources>
+    <Grid>
+        <StackPanel Height="Auto" Margin="0,0,0,0" VerticalAlignment="Stretch">
+            <Menu Width="Auto" Height="20">
+                <MenuItem Header="_File">
+                    <MenuItem x:Name="AppExit" Header="E_xit" HorizontalAlignment="Left" Width="140" Click="AppExit_Click"/>
+                </MenuItem>
+            </Menu>
+            <TabControl Height="473" Margin="0,0,0,0" SelectionChanged="TabControl_SelectionChanged">
+                <TabItem Header="Coins" >
+                    <Grid Background="#FFE5E5E5" Height="304">
+                        <Label Content="Select Album" HorizontalAlignment="Left" Margin="59,0,0,0" VerticalAlignment="Top"/>
+                        <ComboBox x:Name="AlbumsComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="170" Margin="10,25,0,0" RenderTransformOrigin="0.486,1.75"/>
+                        <Label Content="Select Country" HorizontalAlignment="Left" Margin="259,0,0,0" VerticalAlignment="Top"/>
+                        <ComboBox x:Name="CountriesComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="170" Margin="210,25,0,0" RenderTransformOrigin="0.486,1.75"/>
+                        <Label Content="Select Material" HorizontalAlignment="Left" Margin="459,0,0,0" VerticalAlignment="Top"/>
+                        <ComboBox x:Name="MaterialsComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="170" Margin="410,25,0,0" RenderTransformOrigin="0.486,1.75"/>
+                        <TextBox HorizontalAlignment="Left" Name="CoinNameTextBox" Margin="17,78,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90"/>
+                        <Label Content="Name" HorizontalAlignment="Left" Margin="41,52,0,0" VerticalAlignment="Top"/>
+                        <TextBox HorizontalAlignment="Left" x:Name="CoinNominationTextBox" Margin="121,78,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90"/>
+                        <Label Content="Nomination" HorizontalAlignment="Left" Margin="130,52,0,0" VerticalAlignment="Top"/>
+                        <TextBox HorizontalAlignment="Left" x:Name="CoinWeightTextBox" Margin="230,78,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90"/>
+                        <Label Content="Weight" HorizontalAlignment="Left" Margin="250,52,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.861,0.556"/>
+                        <TextBox HorizontalAlignment="Left" x:Name="CoinDiameterTextBox" Margin="342,78,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90"/>
+                        <Label Content="Diameter" HorizontalAlignment="Left" Margin="358,52,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.861,0.556"/>
+                        <TextBox HorizontalAlignment="Left" x:Name="CoinWidthTextBox" Margin="458,78,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90"/>
+                        <Label Content="Width" HorizontalAlignment="Left" Margin="479,52,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.861,0.556"/>
+                        <TextBox HorizontalAlignment="Left" x:Name="CoinSynonymsTextBox" Margin="17,127,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="308"/>
+                        <Label Content="Synonyms" HorizontalAlignment="Left" Margin="138,101,0,0" VerticalAlignment="Top" RenderTransformOrigin="-2.916,0.641"/>
+                        <TextBox HorizontalAlignment="Left" x:Name="CoinDescriptionTextBox" Margin="342,127,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="308"/>
+                        <Label Content="Description" HorizontalAlignment="Left" Margin="463,101,0,0" VerticalAlignment="Top" RenderTransformOrigin="-2.916,0.641"/>
+                    </Grid>
+
+
+                </TabItem>
+                <TabItem Header="Albums">
+                    <Grid Background="#FFE5E5E5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="200"/>
+                        </Grid.ColumnDefinitions>
+                        <DataGrid Grid.Column="0" x:Name="albumsDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True"
+                            ItemsSource="{Binding Source={StaticResource albumsViewSource}}"  
+                            Height="Auto" VerticalAlignment="Stretch" Margin="0,0,0,0" RowDetailsVisibilityMode="VisibleWhenSelected" SelectionChanged="albumsDataGrid_SelectionChanged">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding ID}" Header ="ID" Visibility="Collapsed"/>
+                                <DataGridTextColumn Binding="{Binding Name}" Width="*">
+                                    <DataGridTextColumn.Header>
+                                        <GridViewColumnHeader Content="Name" Name="nameAlbumDataGridColumnHeader" />
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Binding="{Binding PagesCount}" Width="60">
+                                    <DataGridTextColumn.Header>
+                                        <GridViewColumnHeader Content="Pages" Name="pagesAlbumDataGridColumnHeader" />
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Binding="{Binding ColumnsCount}" Width="60">
+                                    <DataGridTextColumn.Header>
+                                        <GridViewColumnHeader Content="Columns" Name="columnsAlbumDataGridColumnHeader" />
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Binding="{Binding RowsCount}" Width="60">
+                                    <DataGridTextColumn.Header>
+                                        <GridViewColumnHeader Content="Rows" Name="rowAlbumDataGridColumnHeader" />
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Binding="{Binding CoinsCount}" Width="50" IsReadOnly="True">
+                                    <DataGridTextColumn.Header>
+                                        <GridViewColumnHeader Content="Coins" Name="coinsAlbumFromDataGridColumnHeader" />
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <Grid Grid.Column = "1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="200"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Image Grid.Row="0" Name = "AlbumCoverImage" HorizontalAlignment="Left" Height="169" Margin="2,0,0,0" VerticalAlignment="Top" Width="199"/>
+                            <Button Grid.Row="0" Content="Load" Name = "LoadAlbumCover" HorizontalAlignment="Left" Margin="2,175,0,5"/>
+                            <Button Grid.Row="0" Content="Past" Name = "PastAlbumCover" HorizontalAlignment="Left" Margin="42,175,0,0" VerticalAlignment="Top" Click="PastAlbumCover_Click"/>
+                            <Button Grid.Row="0" Content="Save" x:Name = "SaveAlbumCover" HorizontalAlignment="Left" Margin="82,175,0,0" VerticalAlignment="Top" Click="SaveAlbumCover_Click"/>
+                            <Image Grid.Row="1" Name = "AlbumPageCellsImage" HorizontalAlignment="Left" Height="199" Margin="2,0,0,0" VerticalAlignment="Top" Width="199"/>
+                        </Grid>
+
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Countries" Height="20" VerticalAlignment="Bottom">
+                    <Grid Background="#FFE5E5E5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <DataGrid Grid.Row="1" x:Name="countriesDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" 
+                            ItemsSource="{Binding Source={StaticResource countriesViewSource}}"  GridViewColumnHeader.Click="countriesData_GridViewColumnHeaderClick"
+                            Height="Auto" VerticalAlignment="Stretch" Margin="0,0,0,0" RowDetailsVisibilityMode="VisibleWhenSelected">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding Name}" Width="*">
+                                    <DataGridTextColumn.Header>
+                                        <GridViewColumnHeader Content="Name" Name="nameCountriesDataGridColumnHeader" />
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Binding="{Binding StartYear}" Width="50">
+                                    <DataGridTextColumn.Header>
+                                        <GridViewColumnHeader Content="From" Name="fromCountriesDataGridColumnHeader" />
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Binding="{Binding EndYear}" Width="50">
+                                    <DataGridTextColumn.Header>
+                                        <GridViewColumnHeader Content="Till" Name="tillCountriesDataGridColumnHeader" />
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Binding="{Binding From}" Header="FromSort" Visibility="Collapsed"/>
+                                <DataGridTextColumn Binding="{Binding Till}" Header="TillSort" Visibility="Collapsed"/>
+                                <DataGridTextColumn Binding="{Binding CoinsCount}" Width="50" IsReadOnly="True">
+                                    <DataGridTextColumn.Header>
+                                        <GridViewColumnHeader Content="Coins" Name="coinsCountriesFromDataGridColumnHeader" />
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <CheckBox x:Name="countriesFilterCheckbox" Grid.Row="0" Content="Filter by" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Checked="countriesFilterCheckbox_Checked" Unchecked="countriesFilterCheckbox_Checked"/>
+                        <Label Content="Name contains" HorizontalAlignment="Left" Margin="89,0,0,0" VerticalAlignment="Top"/>
+                        <TextBox x:Name="nameCountriesFilterTextBox" HorizontalAlignment="Left" Margin="183,4,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="198" TextChanged="nameCountriesFilterTextBox_TextChanged"/>
+                        <Label Content="From Year" HorizontalAlignment="Left" Margin="389,0,0,0" VerticalAlignment="Top" RenderTransformOrigin="3.899,0.572"/>
+                        <TextBox x:Name="fromCountriesFilterTextBox" HorizontalAlignment="Left" Margin="460,4,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" TextChanged="fromCountriesFilterTextBox_TextChanged"/>
+                        <Label Content="Till Year" HorizontalAlignment="Left" Margin="523,0,0,0" VerticalAlignment="Top" RenderTransformOrigin="3.899,0.572"/>
+                        <TextBox x:Name="tillCountriesFilterTextBox" HorizontalAlignment="Left" Margin="594,4,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" TextChanged="tillCountriesFilterTextBox_TextChanged"/>
+                    </Grid>
+                </TabItem>
+                <TabItem  Header="Materials">
+                    <Grid Background="#FFE5E5E5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <DataGrid Grid.Row="1" x:Name="materialsDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" 
+                            ItemsSource="{Binding Source={StaticResource materialsViewSource}}" GridViewColumnHeader.Click="materialsData_GridViewColumnHeaderClick"
+                            Height="Auto" VerticalAlignment="Stretch" Margin="0,0,0,0" RowDetailsVisibilityMode="VisibleWhenSelected">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding Name}" Width="200">
+                                    <DataGridTextColumn.Header>
+                                        <GridViewColumnHeader Content="Name" Name="nameMaterialsDataGridColumnHeader" />
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Binding="{Binding Synonyms}" Header="Synonyms" Width="*"/>
+                                <DataGridTextColumn Binding="{Binding CoinsCount}" Width="50" IsReadOnly="True">
+                                    <DataGridTextColumn.Header>
+                                        <GridViewColumnHeader Content="Coins" Name="coinsMaterialsDataGridColumnHeader" />
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <CheckBox x:Name="materialsFilterCheckbox" Grid.Row="0" Content="Filter by" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Checked="materialsFilterCheckbox_Checked" Unchecked="materialsFilterCheckbox_Checked"/>
+                        <Label Content="Name/synonyms contain" HorizontalAlignment="Left" Margin="89,0,0,0" VerticalAlignment="Top"/>
+                        <TextBox x:Name="nameSynonymsMaterialsFilterTextBox" HorizontalAlignment="Left" Margin="243,4,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="198" TextChanged="nameSynonymsMaterialsFilterTextBox_TextChanged"/>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </StackPanel>
+    </Grid>
+</Window>
